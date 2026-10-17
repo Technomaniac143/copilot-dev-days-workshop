@@ -2,7 +2,13 @@
 // Run them with:  npm test
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
-const { shuffle, isCorrect, calculatePercentage, getGrade } = require("../src/quiz.js");
+const {
+  shuffle,
+  isCorrect,
+  calculatePercentage,
+  isNewBestScore,
+  getGrade
+} = require("../src/quiz.js");
 
 test("isCorrect returns true for the right answer", () => {
   assert.equal(isCorrect({ answer: 2 }, 2), true);
@@ -18,6 +24,33 @@ test("calculatePercentage rounds to a whole number", () => {
 
 test("calculatePercentage returns 0 when there are no questions", () => {
   assert.equal(calculatePercentage(0, 0), 0);
+});
+
+test("isNewBestScore returns true when no best score exists", () => {
+  assert.equal(isNewBestScore(0, null), true);
+});
+
+test("isNewBestScore returns true when current score is higher", () => {
+  assert.equal(isNewBestScore(81, 80), true);
+});
+
+test("isNewBestScore returns false when current score ties the best", () => {
+  assert.equal(isNewBestScore(80, 80), false);
+});
+
+test("isNewBestScore returns false when current score is lower", () => {
+  assert.equal(isNewBestScore(79, 80), false);
+});
+
+test("isNewBestScore accepts percentage boundaries", () => {
+  assert.equal(isNewBestScore(100, 99), true);
+  assert.equal(isNewBestScore(0, 0), false);
+});
+
+test("isNewBestScore returns false for invalid percentages", () => {
+  assert.equal(isNewBestScore(-1, null), false);
+  assert.equal(isNewBestScore(101, 100), false);
+  assert.equal(isNewBestScore(81, "80"), false);
 });
 
 test("shuffle keeps every item and does not change the original array", () => {
