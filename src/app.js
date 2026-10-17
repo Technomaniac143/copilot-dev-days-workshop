@@ -21,6 +21,9 @@ function readBestScore() {
   try {
     const storedScore = window.localStorage.getItem(BEST_SCORE_KEY);
     if (storedScore === null) return { available: true, score: null };
+    if (!/^(100|[1-9]?\d)$/.test(storedScore)) {
+      return { available: true, score: null };
+    }
 
     const score = Number(storedScore);
     if (!Number.isInteger(score) || score < 0 || score > 100) {
