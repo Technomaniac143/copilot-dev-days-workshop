@@ -29,6 +29,13 @@ function calculatePercentage(score, total) {
   return Math.round((score / total) * 100);
 }
 
+function isNewBestScore(current, best) {
+  const isPercentage = (value) => Number.isInteger(value) && value >= 0 && value <= 100;
+  if (!isPercentage(current)) return false;
+  if (best === null) return true;
+  return isPercentage(best) && current > best;
+}
+
 /**
  * Turns a percentage into a grade.
  * A = 90% or more, B = 75% or more, C = 50% or more.
@@ -42,5 +49,5 @@ function getGrade(percentage) {
 
 // Lets Node.js tests load this file. Browsers ignore this block.
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { shuffle, isCorrect, calculatePercentage, getGrade };
+  module.exports = { shuffle, isCorrect, calculatePercentage, isNewBestScore, getGrade };
 }
